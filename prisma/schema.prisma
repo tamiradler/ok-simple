@@ -24,6 +24,7 @@ model City {
   name String
   zone Zone @relation(fields: [zoneid], references: [id])
   zoneid String
+  Order Order[]
 }
 
 model Zone {
@@ -38,6 +39,7 @@ model ProductType {
   productGroup ProductGroup @relation(fields: [productGroupid], references: [id])
   productGroupid String
   @@map("product_type")
+  Order Order[]
 }
 
 model ProductGroup {
@@ -45,4 +47,17 @@ model ProductGroup {
   name String
   productTypes ProductType[]
   @@map("product_group")
+}
+
+model Order {
+  id String @id @default(uuid())
+  date DateTime
+  city City @relation(fields: [cityid], references: [id])
+  cityid String
+  productType ProductType @relation(fields: [productTypeid], references: [id])
+  productTypeid String
+  customerName String
+  corporateId Int
+  price Decimal
+  discount Decimal
 }
