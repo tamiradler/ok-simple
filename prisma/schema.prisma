@@ -18,3 +18,31 @@ model FirstTable {
   id        Int      @id @default(autoincrement())
   title     String   @db.VarChar(255)
 }
+
+model City {
+  id String @id @default(uuid())
+  name String
+  zone Zone @relation(fields: [zoneid], references: [id])
+  zoneid String
+}
+
+model Zone {
+  id String @id @default(uuid())
+  name String
+  cities City[]
+}
+
+model ProductType {
+  id String @id @default(uuid())
+  name String
+  productGroup ProductGroup @relation(fields: [productGroupid], references: [id])
+  productGroupid String
+  @@map("product_type")
+}
+
+model ProductGroup {
+  id String @id @default(uuid())
+  name String
+  productTypes ProductType[]
+  @@map("product_group")
+}
