@@ -19,7 +19,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className={`bg-gray-800 p-4 text-left`}>
+    <nav className={`bg-gray-800 p-4 text-left shadow-2xl`}>
       <div className="container mx-auto flex items-center justify-between">
         <a href="/" className="flex items-center">
           <Image
