@@ -1,12 +1,9 @@
 import { getProductGroups } from "../actions/catalog-data";
+import { NewOrder } from "./new-order";
 
 export default async function About() {
   const productGroups = await getProductGroups();
   return (
-    <>
-      {productGroups.map((pg) => (
-        <div key={pg.name}>{pg.name}</div>
-      ))}
-    </>
+    <NewOrder productGroups={productGroups}></NewOrder>
   );
 }
