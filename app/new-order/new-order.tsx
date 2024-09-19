@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { City, ProductGroups, ProductType, Zone } from "../actions/catalog-data";
+import {
+  City,
+  ProductGroups,
+  ProductType,
+  Zone,
+} from "../actions/catalog-data";
+import { createNewOrder } from "../actions/orders";
 
 export function NewOrder({
   productGroups,
@@ -17,8 +23,11 @@ export function NewOrder({
     null
   );
   const [selectedZone, setZone] = useState<Zone | null>(null);
-
   const [selectedCity, setCity] = useState<City | null>(null);
+  const [customerName, setCustomerName] = useState("");
+  const [corporateId, setCorporateId] = useState("");
+  const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const groupId = e.target.value;
@@ -42,8 +51,37 @@ export function NewOrder({
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = e.target.value;
-    const city = selectedZone?.cities.find((city) => city.id === cityId) || null;
+    const city =
+      selectedZone?.cities.find((city) => city.id === cityId) || null;
     setCity(city);
+  };
+
+  const handleSubmit = () => {
+    if (!selectedCity) {
+      alert("City not selected");
+      return;
+    }
+    if (!selectedProduct) {
+      alert("City not selected");
+      return;
+    }
+    if (!corporateId) {
+      alert("corporateId not selected");
+      return;
+    }
+    if (!customerName) {
+      alert("customerName not selected");
+      return;
+    }
+    createNewOrder({
+      cityId: selectedCity.id,
+      corporateId: Number(corporateId),
+      customerName,
+      date: new Date(),
+      discount,
+      price,
+      productTypeId: selectedProduct.id
+    })
   };
 
   return (
@@ -108,6 +146,54 @@ export function NewOrder({
           </option>
         ))}
       </select>
+      <label className="block text-sm font-medium text-gray-700">
+        Customer Name
+      </label>
+      <input
+        type="text"
+        className="mt-1 block w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        value={customerName}
+        onChange={(e) => setCustomerName(e.target.value)}
+        placeholder="Enter customer name"
+      />
+
+      <label className="block text-sm font-medium text-gray-700">
+        Corporate ID
+      </label>
+      <input
+        type="text"
+        className="mt-1 block w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        value={corporateId}
+        onChange={(e) => setCorporateId(e.target.value)}
+        placeholder="Enter corporate ID"
+      />
+
+      <label className="block text-sm font-medium text-gray-700">Price</label>
+      <input
+        type="number"
+        className="mt-1 block w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        value={price}
+        onChange={(e) => setPrice(parseFloat(e.target.value))}
+        placeholder="Enter price"
+      />
+
+      <label className="block text-sm font-medium text-gray-700">
+        Discount
+      </label>
+      <input
+        type="number"
+        className="mt-1 block w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        value={discount}
+        onChange={(e) => setDiscount(parseFloat(e.target.value))}
+        placeholder="Enter discount"
+      />
+      <button
+        type="button"
+        className="w-48 bg-blue-500 text-white mt-5 py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        onClick={handleSubmit}
+      >
+        Submit
+      </button>
     </>
   );
 }
