@@ -1,9 +1,10 @@
-import { getProductGroups } from "../actions/catalog-data";
+import { getProductGroups, getZones } from "../actions/catalog-data";
 import { NewOrder } from "./new-order";
 
 export default async function About() {
-  const productGroups = await getProductGroups();
-  return (
-    <NewOrder productGroups={productGroups}></NewOrder>
-  );
+  const [productGroups, zones] = await Promise.all([
+    getProductGroups(),
+    getZones(),
+  ]);
+  return <NewOrder productGroups={productGroups} zones={zones}></NewOrder>;
 }
