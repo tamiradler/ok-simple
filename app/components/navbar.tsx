@@ -70,6 +70,7 @@ export default function Navbar() {
         <div className="md:hidden mt-2 space-y-2">
           {menuItems.map((menuItem) => (
             <Link
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               href={menuItem.link}
               className="block text-white hover:text-gray-300"
             >
