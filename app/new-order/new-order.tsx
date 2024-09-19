@@ -8,6 +8,7 @@ import {
   Zone,
 } from "../actions/catalog-data";
 import { createNewOrder } from "../actions/orders";
+import { useRouter } from "next/navigation";
 
 export function NewOrder({
   productGroups,
@@ -28,6 +29,8 @@ export function NewOrder({
   const [corporateId, setCorporateId] = useState("");
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const groupId = e.target.value;
@@ -73,6 +76,7 @@ export function NewOrder({
       alert("customerName not selected");
       return;
     }
+    setIsLoading(true);
     createNewOrder({
       cityId: selectedCity.id,
       corporateId: Number(corporateId),
@@ -80,8 +84,10 @@ export function NewOrder({
       date: new Date(),
       discount,
       price,
-      productTypeId: selectedProduct.id
+      productTypeId: selectedProduct.id,
     })
+      .then(() => router.push("/"))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -194,6 +200,12 @@ export function NewOrder({
       >
         Submit
       </button>
+
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <p className="text-white text-2xl">Saving...</p>
+        </div>
+      )}
     </>
   );
 }
