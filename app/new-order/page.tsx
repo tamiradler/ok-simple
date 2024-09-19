@@ -1,14 +1,12 @@
-"use client"
+import { getProductGroups } from "../actions/catalog-data";
 
-import { useEffect, useState } from "react";
-import { getProductGroups, ProductGroups } from "../actions/catalog-data";
-
-export default function About() {
-  const [productGroups, setProductGroups] = useState<ProductGroups[]>([]);
-  useEffect(() => {
-    getProductGroups().then(productGroups => setProductGroups(productGroups));
-  }, []);
-  return <>
-    {productGroups.map(pg => <div>{pg.name}</div>)}
-  </>;
+export default async function About() {
+  const productGroups = await getProductGroups();
+  return (
+    <>
+      {productGroups.map((pg) => (
+        <div key={pg.name}>{pg.name}</div>
+      ))}
+    </>
+  );
 }
