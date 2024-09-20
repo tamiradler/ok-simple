@@ -21,7 +21,7 @@ export default function Navbar() {
   return (
     <nav className={`bg-gray-800 p-4 text-left shadow-2xl`}>
       <div className="container mx-auto flex items-center justify-between">
-        <a href="/" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="https://oksimple.co.il/wp-content/uploads/2018/06/logo.svg"
             alt="Logo"
@@ -29,7 +29,7 @@ export default function Navbar() {
             height={60}
             className="mr-4"
           />
-        </a>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-8">
