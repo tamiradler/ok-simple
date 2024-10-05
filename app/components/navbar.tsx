@@ -7,11 +7,11 @@ import { useState } from "react";
 const menuItems = [
   {
     link: "/new-order",
-    text: "הזמנה חדשה (New Order)",
+    text: "הזמנה חדשה",
   },
   {
     link: "/new-order",
-    text: "עדכון הזמנה (Update Order)",
+    text: "עדכון הזמנה",
   },
 ];
 
