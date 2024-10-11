@@ -25,3 +25,18 @@ export async function createNewOrder(order: Order) {
     },
   });
 }
+
+export async function getOrdersCount(): Promise<number> {
+  return await prisma.order.count();
+}
+
+export async function getOrders(pageSize: number, page: number) {
+  return await prisma.order.findMany({
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    include: {
+      city: true,
+      productType: true,
+    }
+  });
+}

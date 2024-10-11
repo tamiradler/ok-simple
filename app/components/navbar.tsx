@@ -10,7 +10,7 @@ const menuItems = [
     text: "הזמנה חדשה",
   },
   {
-    link: "/new-order",
+    link: "/search-order",
     text: "עדכון הזמנה",
   },
 ];
