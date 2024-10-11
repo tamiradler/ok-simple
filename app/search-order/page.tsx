@@ -1,13 +1,25 @@
-import { getOrders } from "../actions/orders";
+import { getOrders, getOrdersCount } from "../actions/orders";
+import Link from "next/link";
 
 export const revalidate = 60;
 
-export default async function Page() {
-  const orders = await getOrders(5, 1);
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
+  const page = searchParams.page ? Number(searchParams.page) : 1;
+  const prevPage = page - 1;
+  const nextPage = page + 1;
+  const pageSize = 5;
+  const [orders, count] = await Promise.all([
+    getOrders(pageSize, page),
+    getOrdersCount(),
+  ]);
   return (
     <div className="container mx-auto p-4">
+      Total orders: {count}
       <div className="flex flex-col">
-        {/* Table Header */}
         <div className="flex bg-gray-200 p-2 font-bold">
           <div className="flex-1">ID</div>
           <div className="flex-1">תאריך</div>
@@ -19,10 +31,9 @@ export default async function Page() {
           <div className="flex-1">הנחה</div>
           <div className="flex-1">מחיר סופי</div>
         </div>
-        {/* Table Rows */}
         {orders.map((order) => (
           <div key={order.id} className="flex p-2 border-b">
-            <div className="flex-1">{order.id}</div>
+            <div className="flex-1">{order.incrementalId}</div>
             <div className="flex-1">{order.date.toLocaleDateString()}</div>
             <div className="flex-1">{order.city.name}</div>
             <div className="flex-1">{order.productType.name}</div>
@@ -30,10 +41,51 @@ export default async function Page() {
             <div className="flex-1">{order.corporateId}</div>
             <div className="flex-1">{order.price.toFixed(2)}</div>
             <div className="flex-1">{order.discount.toFixed(2)}</div>
-            <div className="flex-1">{order.price.times(order.discount.times(1/100).minus(1).times(-1)).toFixed(2)}</div>
+            <div className="flex-1">
+              {order.price
+                .times(
+                  order.discount
+                    .times(1 / 100)
+                    .minus(1)
+                    .times(-1)
+                )
+                .toFixed(2)}
+            </div>
           </div>
         ))}
       </div>
+      <Link
+        href={{
+          pathname: "/search-order",
+          query: { ...searchParams, page: prevPage },
+        }}
+      >
+        <button
+          disabled={prevPage < 1}
+          className={`mr-2 p-2 rounded bg-blue-500 text-white ${
+            !prevPage ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+          }`}
+        >
+          Prev Page
+        </button>
+      </Link>
+      <Link
+        href={{
+          pathname: "/search-order",
+          query: { ...searchParams, page: nextPage },
+        }}
+      >
+        <button
+          disabled={page > count / pageSize}
+          className={`mr-2 p-2 rounded bg-blue-500 text-white ${
+            page > count / pageSize
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-blue-600"
+          }`}
+        >
+          Next Page
+        </button>
+      </Link>
     </div>
   );
 }

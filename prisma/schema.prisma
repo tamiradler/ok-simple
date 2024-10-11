@@ -51,6 +51,7 @@ model ProductGroup {
 
 model Order {
   id String @id @default(uuid())
+  incrementalId Int @default(autoincrement())
   date DateTime
   city City @relation(fields: [cityid], references: [id])
   cityid String
