@@ -33,7 +33,15 @@ export default async function Page({
         </div>
         {orders.map((order) => (
           <div key={order.id} className="flex p-2 border-b">
-            <div className="flex-1">{order.incrementalId}</div>
+            <div className="flex-1">
+              <Link
+                href={{
+                  pathname: `/edit-order/${order.incrementalId}`,
+                }}
+              >
+                {order.incrementalId}
+              </Link>
+            </div>
             <div className="flex-1">{order.date.toLocaleDateString()}</div>
             <div className="flex-1">{order.city.name}</div>
             <div className="flex-1">{order.productType.name}</div>

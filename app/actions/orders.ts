@@ -37,6 +37,15 @@ export async function getOrders(pageSize: number, page: number) {
     include: {
       city: true,
       productType: true,
-    }
+    },
+  });
+}
+
+export async function getOrder(orderId: number) {
+  return await prisma.order.findFirst({
+    where: {
+      incrementalId: orderId,
+    },
+    include: { city: true, productType: true },
   });
 }
