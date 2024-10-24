@@ -102,7 +102,7 @@ export function NewOrder({
       cityId: selectedCity.id,
       corporateId: Number(corporateId),
       customerName,
-      date: new Date(),
+      date: order?.date || new Date(),
       discount,
       price,
       productTypeId: selectedProduct.id,
