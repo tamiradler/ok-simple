@@ -7,15 +7,17 @@ import {
   ProductType,
   Zone,
 } from "../actions/catalog-data";
-import { createNewOrder } from "../actions/orders";
+import { createNewOrder, Order } from "../actions/orders";
 import { useRouter } from "next/navigation";
 
 export function NewOrder({
   productGroups,
   zones,
+  order,
 }: {
   productGroups: ProductGroups[];
   zones: Zone[];
+  order?: Order;
 }) {
   const [selectedGroup, setSelectedGroup] = useState<ProductGroups | null>(
     null
@@ -23,12 +25,18 @@ export function NewOrder({
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
     null
   );
-  const [selectedZone, setZone] = useState<Zone | null>(null);
-  const [selectedCity, setCity] = useState<City | null>(null);
-  const [customerName, setCustomerName] = useState("");
-  const [corporateId, setCorporateId] = useState("");
-  const [price, setPrice] = useState(0);
-  const [discount, setDiscount] = useState(0);
+  const initialZone = zones.find((zone) =>
+    zone.cities.some((city) => city.id == order?.cityId)
+  );
+  const [selectedZone, setZone] = useState<Zone | null>(initialZone || null);
+  const initialCity = zones
+    .flatMap((zone) => zone.cities)
+    .find((city) => city.id == order?.cityId);
+  const [selectedCity, setCity] = useState<City | null>(initialCity || null);
+  const [customerName, setCustomerName] = useState(order?.customerName || "");
+  const [corporateId, setCorporateId] = useState(order?.corporateId.toString() || "");
+  const [price, setPrice] = useState(order?.price || 0);
+  const [discount, setDiscount] = useState(order?.discount || 0);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -68,8 +76,9 @@ export function NewOrder({
       alert("City not selected");
       return;
     }
-    if (!corporateId) {
-      alert("corporateId not selected");
+    const regex = /^\d{9}$/;
+    if (!corporateId || regex.test(corporateId)) {
+      alert("corporateId not valid");
       return;
     }
     if (!customerName) {
