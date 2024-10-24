@@ -32,34 +32,32 @@ export default async function Page({
           <div className="flex-1">מחיר סופי</div>
         </div>
         {orders.map((order) => (
-          <div key={order.id} className="flex p-2 border-b">
-            <div className="flex-1">
-              <Link
-                href={{
-                  pathname: `/edit-order/${order.incrementalId}`,
-                }}
-              >
-                {order.incrementalId}
-              </Link>
+          <Link
+            href={{
+              pathname: `/edit-order/${order.incrementalId}`,
+            }}
+          >
+            <div key={order.id} className="flex p-2 border-b">
+              <div className="flex-1">{order.incrementalId}</div>
+              <div className="flex-1">{order.date.toLocaleDateString()}</div>
+              <div className="flex-1">{order.city.name}</div>
+              <div className="flex-1">{order.productType.name}</div>
+              <div className="flex-1">{order.customerName}</div>
+              <div className="flex-1">{order.corporateId}</div>
+              <div className="flex-1">{order.price.toFixed(2)}</div>
+              <div className="flex-1">{order.discount.toFixed(2)}</div>
+              <div className="flex-1">
+                {order.price
+                  .times(
+                    order.discount
+                      .times(1 / 100)
+                      .minus(1)
+                      .times(-1)
+                  )
+                  .toFixed(2)}
+              </div>
             </div>
-            <div className="flex-1">{order.date.toLocaleDateString()}</div>
-            <div className="flex-1">{order.city.name}</div>
-            <div className="flex-1">{order.productType.name}</div>
-            <div className="flex-1">{order.customerName}</div>
-            <div className="flex-1">{order.corporateId}</div>
-            <div className="flex-1">{order.price.toFixed(2)}</div>
-            <div className="flex-1">{order.discount.toFixed(2)}</div>
-            <div className="flex-1">
-              {order.price
-                .times(
-                  order.discount
-                    .times(1 / 100)
-                    .minus(1)
-                    .times(-1)
-                )
-                .toFixed(2)}
-            </div>
-          </div>
+          </Link>
         ))}
       </div>
       <Link
