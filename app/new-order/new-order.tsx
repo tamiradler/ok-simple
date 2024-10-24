@@ -7,23 +7,33 @@ import {
   ProductType,
   Zone,
 } from "../actions/catalog-data";
-import { createNewOrder, Order } from "../actions/orders";
+import { createNewOrder, Order, updateOrder } from "../actions/orders";
 import { useRouter } from "next/navigation";
 
 export function NewOrder({
   productGroups,
   zones,
   order,
+  orderId,
 }: {
   productGroups: ProductGroups[];
   zones: Zone[];
   order?: Order;
+  orderId?: string;
 }) {
-  const [selectedGroup, setSelectedGroup] = useState<ProductGroups | null>(
-    null
+  const initialProductGroups = productGroups.find((productGroup) =>
+    productGroup.productTypes.some(
+      (productType) => productType.id == order?.productTypeId
+    )
   );
+  const [selectedGroup, setSelectedGroup] = useState<ProductGroups | null>(
+    initialProductGroups || null
+  );
+  const initialProductType = productGroups
+    .flatMap((productGroup) => productGroup.productTypes)
+    .find((productType) => productType.id == order?.productTypeId);
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
-    null
+    initialProductType || null
   );
   const initialZone = zones.find((zone) =>
     zone.cities.some((city) => city.id == order?.cityId)
@@ -34,7 +44,9 @@ export function NewOrder({
     .find((city) => city.id == order?.cityId);
   const [selectedCity, setCity] = useState<City | null>(initialCity || null);
   const [customerName, setCustomerName] = useState(order?.customerName || "");
-  const [corporateId, setCorporateId] = useState(order?.corporateId.toString() || "");
+  const [corporateId, setCorporateId] = useState(
+    order?.corporateId.toString() || ""
+  );
   const [price, setPrice] = useState(order?.price || 0);
   const [discount, setDiscount] = useState(order?.discount || 0);
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +98,7 @@ export function NewOrder({
       return;
     }
     setIsLoading(true);
-    createNewOrder({
+    const orderToPersist = {
       cityId: selectedCity.id,
       corporateId: Number(corporateId),
       customerName,
@@ -94,7 +106,14 @@ export function NewOrder({
       discount,
       price,
       productTypeId: selectedProduct.id,
-    })
+    };
+    let promise: Promise<unknown>;
+    if (order && orderId) {
+      promise = updateOrder(orderToPersist, orderId);
+    } else {
+      promise = createNewOrder(orderToPersist);
+    }
+    promise
       .then(() => router.push("/"))
       .finally(() => setIsLoading(false));
   };

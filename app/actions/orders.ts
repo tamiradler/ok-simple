@@ -26,6 +26,23 @@ export async function createNewOrder(order: Order) {
   });
 }
 
+export async function updateOrder(order: Order, id: string) {
+  await prisma.order.update({
+    where: {
+      id: id,
+    },
+    data: {
+      corporateId: order.corporateId,
+      customerName: order.customerName,
+      date: order.date,
+      discount: order.discount,
+      price: order.price,
+      cityid: order.cityId,
+      productTypeid: order.productTypeId,
+    },
+  });
+}
+
 export async function getOrdersCount(): Promise<number> {
   return await prisma.order.count();
 }
@@ -38,6 +55,9 @@ export async function getOrders(pageSize: number, page: number) {
       city: true,
       productType: true,
     },
+    orderBy: {
+      date: "desc"
+    }
   });
 }
 

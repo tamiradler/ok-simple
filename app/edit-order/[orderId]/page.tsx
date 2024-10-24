@@ -27,6 +27,7 @@ export default async function Page({
           price: order?.price.toNumber() || 0,
           productTypeId: order?.productTypeid || "",
         }}
+        orderId={order?.id}
       ></NewOrder>
     </>
   );
