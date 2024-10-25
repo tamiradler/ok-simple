@@ -1,6 +1,8 @@
 import { prisma } from "@/prisma/prisma";
 import { Dashboard } from "./Dashboard";
 
+export const revalidate = 0;
+
 async function getTotalPriceByCity() {
   const groupedData = await prisma.order.groupBy({
     by: ["cityid"],
