@@ -13,6 +13,10 @@ const menuItems = [
     link: "/search-order",
     text: "עדכון הזמנה",
   },
+  {
+    link: "/dashboard",
+    text: "דשבורד",
+  },
 ];
 
 export default function Navbar() {
@@ -34,7 +38,7 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-8">
           {menuItems.map((menuItem) => (
-            <Link
+            <Link key={menuItem.text}
               href={menuItem.link}
               className="text-white hover:text-gray-300"
             >
@@ -69,7 +73,7 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden mt-2 space-y-2">
           {menuItems.map((menuItem) => (
-            <Link
+            <Link key={menuItem.text}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               href={menuItem.link}
               className="block text-white hover:text-gray-300"
