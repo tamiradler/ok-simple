@@ -33,7 +33,9 @@ export default async function Page() {
   const res = await getTotalPriceByCity();
   return (
     <>
-      <Dashboard data={res}></Dashboard>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Dashboard data={res}></Dashboard>
+      </div>
     </>
   );
 }
