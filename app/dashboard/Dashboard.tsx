@@ -10,8 +10,9 @@ import {
   Rectangle,
   CartesianGrid,
 } from "recharts";
+import { ReactElement } from "react";
 
-const CustomTooltip = ({
+const TotalPriceByCityTooltip = ({
   active,
   payload,
 }: {
@@ -29,36 +30,114 @@ const CustomTooltip = ({
   return null;
 };
 
-export function Dashboard({
+function DashboardItem({
+  children,
+  title,
+}: {
+  children: ReactElement;
+  title: string;
+}) {
+  return (
+    <div className="w-full">
+      <h3 className="text-center font-semibold mb-4">{title}</h3>
+      <ResponsiveContainer width="100%" height={200}>
+        {children}
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+export function TotalPriceByCity({
   data,
 }: {
   data: { totalPrice: number | undefined }[];
 }) {
   return (
-    <div className="w-full">
-      <ResponsiveContainer width="100%" height={200}>
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
+    <DashboardItem title="סה״כ מחיר לפי עיר">
+      <BarChart
+        title="sdf"
+        width={500}
+        height={300}
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="city" />
+        <YAxis />
+        <Tooltip content={<TotalPriceByCityTooltip />} />
+        <Bar
+          dataKey="totalPrice"
+          fill="#B3CDAD"
+          activeBar={<Rectangle fill="pink" stroke="blue" />}
+        />
+      </BarChart>
+    </DashboardItem>
+  );
+}
+
+const PopularProductGroupsTooltip = ({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: any;
+}) => {
+  if (active && payload && payload.length) {
+    console.log("ddd", payload);
+
+    return (
+      <div className="bg-white border border-gray-300 p-2 rounded text-right">
+        <p className="label">{`מוצר: ${payload[0].payload.productTypeName}`}</p>
+        <p className="totalPrice">{`כמות: ${payload[0].value}`}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+export function PopularProductGroups({
+  data,
+}: {
+  data: { productTypeName: string | undefined; count: number }[];
+}) {
+  return (
+    <DashboardItem title="הנמכרים ביותר">
+      <BarChart
+        title="sdf"
+        width={500}
+        height={300}
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="productTypeName"
+          tickFormatter={(value: any, index: number) => {
+            const maxLength = 7;
+            if (value.length > maxLength) {
+                return `${value.slice(0, maxLength)}...`;
+              }
+            return value;
           }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="city" />
-          <YAxis />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar
-            dataKey="totalPrice"
-            fill="#B3CDAD"
-            activeBar={<Rectangle fill="pink" stroke="blue" />}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+        />
+        <YAxis />
+        <Tooltip content={<PopularProductGroupsTooltip />} />
+        <Bar
+          dataKey="count"
+          fill="#B3CDAD"
+          activeBar={<Rectangle fill="pink" stroke="blue" />}
+        />
+      </BarChart>
+    </DashboardItem>
   );
 }
