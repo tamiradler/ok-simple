@@ -1,5 +1,9 @@
 import { prisma } from "@/prisma/prisma";
-import { PopularProductGroups, TotalPriceByCity } from "./Dashboard";
+import {
+  PopularCustomer,
+  PopularProductGroups,
+  TotalPriceByCity,
+} from "./Dashboard";
 
 export const revalidate = 0;
 
@@ -66,11 +70,34 @@ async function mostPopularProductGroups() {
   });
 }
 
+async function mostPopularCustomer() {
+  const groupBy = await prisma.order.groupBy({
+    by: ["customerName"],
+    _count: {
+      customerName: true,
+    },
+    orderBy: {
+      _count: {
+        customerName: "desc",
+      },
+    },
+    take: 10,
+  });
+
+  return groupBy.map((item) => ({
+    name: item.customerName,
+    count: item._count.customerName,
+  }));
+}
+
 export default async function Page() {
-  const [totalPriceByCity, popularProductGroups] = await Promise.all([
-    getTotalPriceByCity(),
-    mostPopularProductGroups(),
-  ]);
+  const [totalPriceByCity, popularProductGroups, popularCustomer] =
+    await Promise.all([
+      getTotalPriceByCity(),
+      mostPopularProductGroups(),
+      mostPopularCustomer(),
+    ]);
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -78,6 +105,7 @@ export default async function Page() {
         <PopularProductGroups
           data={popularProductGroups}
         ></PopularProductGroups>
+        <PopularCustomer data={popularCustomer}></PopularCustomer>
       </div>
     </>
   );
