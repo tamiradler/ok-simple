@@ -7,6 +7,9 @@ export default async function Page({
 }: {
   params: { orderId: string };
 }) {
+  if (isNaN(Number(params.orderId)) || isNaN(parseFloat(params.orderId))) {
+    return <h1 className="text-right">{`ההזמנה ${params.orderId} לא נמצאה`}</h1>;
+  }
   const [order, productGroups, zones] = await Promise.all([
     getOrder(Number(params.orderId)),
     getProductGroups(),
