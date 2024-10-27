@@ -7,14 +7,17 @@ export default async function Page({
 }: {
   params: { orderId: string };
 }) {
-  const order = await getOrder(Number(params.orderId));
-  const [productGroups, zones] = await Promise.all([
+  const [order, productGroups, zones] = await Promise.all([
+    getOrder(Number(params.orderId)),
     getProductGroups(),
     getZones(),
   ]);
+  if (!order) {
+    return <h1 className="text-right">{`ההזמנה ${params.orderId} לא נמצאה`}</h1>;
+  }
   return (
     <>
-      <h1>Order id {order?.incrementalId}</h1>
+      <h1 className="text-right">{`עריכת ההזמנה ${params.orderId}`}</h1>
       <NewOrder
         productGroups={productGroups}
         zones={zones}
