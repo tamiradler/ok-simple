@@ -1,5 +1,6 @@
 import { getOrders, getOrdersCount } from "../actions/orders";
 import Link from "next/link";
+import { SearchOrder } from "./search-order";
 
 export const revalidate = 60;
 
@@ -18,8 +19,9 @@ export default async function Page({
   ]);
   return (
     <div className="container mx-auto p-4">
-      Total orders: {count}
-      <div className="flex flex-col">
+      <p>סה״כ הזמנות: {count}</p>
+      <SearchOrder></SearchOrder>
+      <div className="flex flex-col mb-5">
         <div className="overflow-x-auto">
           <div className="min-w-[1000px] flex bg-gray-200 p-2 font-bold">
             <div className="flex-1">ID</div>
@@ -74,7 +76,7 @@ export default async function Page({
             !prevPage ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
           }`}
         >
-          Prev Page
+          דף קודם
         </button>
       </Link>
       <Link
@@ -91,7 +93,7 @@ export default async function Page({
               : "hover:bg-blue-600"
           }`}
         >
-          Next Page
+          דף הבא
         </button>
       </Link>
     </div>
