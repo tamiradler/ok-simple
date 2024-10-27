@@ -53,18 +53,7 @@ export function TotalPriceByCity({
 }) {
   return (
     <DashboardItem title="סה״כ מחיר לפי עיר">
-      <BarChart
-        title="sdf"
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+      <BarChart width={500} height={300} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="city" />
         <YAxis />
@@ -106,18 +95,7 @@ export function PopularProductGroups({
 }) {
   return (
     <DashboardItem title="הנמכרים ביותר">
-      <BarChart
-        title="sdf"
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+      <BarChart width={500} height={300} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="productTypeName"
@@ -166,18 +144,7 @@ export function PopularCustomer({
 }) {
   return (
     <DashboardItem title="הכי הרבה מזמינים">
-      <BarChart
-        title="sdf"
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+      <BarChart width={500} height={300} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="name"
