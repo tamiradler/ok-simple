@@ -252,14 +252,14 @@ export function NewOrder({
       <div>
         <button
           type="button"
-          className="w-48 bg-blue-500 text-white mt-5 py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-24 bg-blue-500 text-white mt-5 py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           onClick={handleSubmit}
         >
           שמור
         </button>
         <button
           type="button"
-          className="w-48 bg-red-500 text-white mt-5 ml-5 py-2 px-4 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-24 bg-red-500 text-white mt-5 ml-5 py-2 px-4 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           onClick={init}
         >
           נקה
