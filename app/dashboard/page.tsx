@@ -90,13 +90,29 @@ async function mostPopularCustomer() {
   }));
 }
 
+async function getMonthlyEarnings() {
+  const monthlyEarnings = await prisma.$queryRaw`
+  SELECT DATE_TRUNC('month', "date") AS month, 
+         SUM("price") AS total_price, 
+         COUNT(*) AS order_count
+  FROM "Order"
+  GROUP BY month
+  ORDER BY month ASC;
+`;
+  return monthlyEarnings;
+}
+
 export default async function Page() {
-  const [totalPriceByCity, popularProductGroups, popularCustomer] =
+  const [totalPriceByCity, popularProductGroups, popularCustomer, monthlyEarnings] =
     await Promise.all([
       getTotalPriceByCity(),
       mostPopularProductGroups(),
       mostPopularCustomer(),
+      getMonthlyEarnings()
     ]);
+
+    console.log("", monthlyEarnings);
+    
 
   return (
     <>
