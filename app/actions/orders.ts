@@ -56,7 +56,7 @@ export async function getOrders(pageSize: number, page: number) {
       productType: true,
     },
     orderBy: {
-      date: "desc"
+      incrementalId: "desc"
     }
   });
 }

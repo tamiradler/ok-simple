@@ -8,5 +8,10 @@ export default async function About() {
     getProductGroups(),
     getZones(),
   ]);
-  return <NewOrder productGroups={productGroups} zones={zones}></NewOrder>;
+  return (
+    <>
+      <h1 className="text-center">הזמנה חדשה</h1>
+      <NewOrder productGroups={productGroups} zones={zones}></NewOrder>
+    </>
+  );
 }

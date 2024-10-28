@@ -9,6 +9,8 @@ import {
 } from "../actions/catalog-data";
 import { createNewOrder, Order, updateOrder } from "../actions/orders";
 import { useRouter } from "next/navigation";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export function NewOrder({
   productGroups,
@@ -34,6 +36,7 @@ export function NewOrder({
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [orderDate, setOrderDate] = useState(new Date());
   const router = useRouter();
 
   useEffect(() => {
@@ -94,6 +97,7 @@ export function NewOrder({
     setCorporateId(order?.corporateId.toString() || "");
     setPrice(order?.price || 0);
     setDiscount(order?.discount || 0);
+    setOrderDate(order?.date || new Date());
   };
 
   const handleSubmit = () => {
@@ -127,7 +131,7 @@ export function NewOrder({
       cityId: selectedCity.id,
       corporateId: Number(corporateId.trim()),
       customerName: customerName.trim(),
-      date: order?.date || new Date(),
+      date: orderDate,
       discount,
       price,
       productTypeId: selectedProduct.id,
@@ -247,6 +251,18 @@ export function NewOrder({
         value={discount}
         onChange={(e) => setDiscount(parseFloat(e.target.value))}
         placeholder="Enter discount"
+      />
+
+      <label className="block text-sm font-medium text-gray-700 text-right pt-5">
+        תאריך הזמנה
+      </label>
+      <DatePicker
+        className="mt-1 block w-48 px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-right"
+        selected={orderDate}
+        minDate={new Date(2024, 0, 1)}
+        onChange={(date) => {
+          if (date) setOrderDate(date);
+        }}
       />
 
       <div>
