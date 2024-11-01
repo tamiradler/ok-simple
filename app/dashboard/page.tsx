@@ -96,6 +96,7 @@ async function getMonthlyEarnings() {
          SUM("price") AS total_price, 
          COUNT(*) AS order_count
   FROM "Order"
+  WHERE "date" >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '5 months'
   GROUP BY month
   ORDER BY month ASC;
 `;
